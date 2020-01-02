@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><!--
+    ChmodPro - Mac OSX widget that determines UNIX/Linux permissions in various formats and displays chmod syntax suggestions.
+    Copyright (C) 2010  Steve Dickinson  dsdickinson@mac.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program (see COPYING file).  If not, see <http://www.gnu.org/licenses/>.
+--><head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style type="text/css" title="AppleStyle">
+        @import "chmodpro.css";
+    </style>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleInfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="localizedStrings.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/utilities.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/setup.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Text.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/InfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/GlassButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="chmodpro.js" charset="utf-8"></script>
+<script type="text/javascript" src="Parts/Shape.js" charset="utf-8"></script>
+</head>
+<body onload="load();">
+    <div id="front">
+        
+    
+    <img id="frontImg" src="Images/front.png" alt="">
+        <div id="right_frame"></div>
+    <div id="left_frame"></div>
+    <div id="info"></div>
+        <div id="title_text"></div>
+    <div id="suid_ckbox" style="">
+	<input type="checkbox" name="special_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton1"></div>
+</div>
+    <div id="owner_read_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton3"></div>
+</div>
+    <div id="group_read_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton5"></div>
+</div>
+    <div id="other_read_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton7"></div>
+</div>
+    
+    <input type="text" name="octal" value="" id="octal" maxlength="0" style="">
+    <div apple-text-overflow="ellipsis" id="owner_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="group_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="other_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="special_text"></div>
+    
+    
+    
+    <div id="owner_write_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton13"></div>
+</div>
+    <div id="sgid_ckbox">
+	<input type="checkbox" name="special_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton15"></div>
+</div>
+    
+    
+    <div id="owner_exec_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton21"></div>
+</div>
+    <div id="sticky_ckbox">
+	<input type="checkbox" name="special_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton23"></div>
+</div>
+    <div apple-text-overflow="ellipsis" id="read_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="write_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="execute_text" style=""></div>
+    <div apple-text-overflow="ellipsis" id="suid_text"></div>
+    <div apple-text-overflow="ellipsis" id="sgid_text"></div>
+    <div apple-text-overflow="ellipsis" id="sticky_text"></div>
+    <div id="clear_button"></div>
+    <textarea id="commands"></textarea>
+    
+    
+    <div id="group_write_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton2"></div>
+</div>
+    <div id="other_write_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton4"></div>
+</div>
+    <div id="group_exec_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton6"></div>
+</div>
+    <div id="other_exec_ckbox" style="">
+	<input type="checkbox" name="std_ckboxes">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" id="checkboxbutton8"></div>
+</div>
+    <div apple-text-overflow="ellipsis" id="text"></div>
+    <div apple-text-overflow="ellipsis" id="text1"></div>
+    <div apple-text-overflow="ellipsis" id="text2"></div>
+    <div apple-text-overflow="ellipsis" id="text3"></div>
+    <div apple-text-overflow="ellipsis" id="text4"></div>
+    <div apple-text-overflow="ellipsis" id="text5"></div>
+    <input type="text" name="symbolic" value="" id="symbolic" maxlength="0" style="">
+    
+    
+    <div apple-text-overflow="ellipsis" id="text7" style=""></div>
+    <div apple-text-overflow="ellipsis" id="text8" style=""></div>
+    <div apple-text-overflow="ellipsis" id="text9"></div>
+    <div apple-text-overflow="ellipsis" id="text12"></div>
+    <div apple-text-overflow="ellipsis" id="text16"></div>
+    </div>
+    <div id="back">
+       <img id="backImg" src="Images/back.png" alt="">
+        
+        <div id="done"></div>
+    
+    
+    
+    <div apple-text-overflow="ellipsis" id="text10"></div>
+    
+    <div apple-text-overflow="ellipsis" id="mylink" style="" onclick="showCodeUni(event)" onmouseover="selectCodeUni(event)"></div>
+    <div apple-text-overflow="ellipsis" id="text6"></div>
+    <div apple-text-overflow="ellipsis" id="text11"></div>
+    <div id="roundedRectangleShape"></div>
+    <div apple-text-overflow="ellipsis" id="text13"></div>
+    <div apple-text-overflow="ellipsis" id="text14"></div>
+    <div apple-text-overflow="ellipsis" id="text15"></div>
+    <div apple-text-overflow="ellipsis" id="text17"></div>
+    </div>
+
+</body>
+</html>

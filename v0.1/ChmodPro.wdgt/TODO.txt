@@ -1,0 +1,7 @@
+ChmodPro TODO
+
+v0.1
+----
+Add umask option.
+Implement merging of groups under Syntax Suggestions.
+Clean up code.

@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><!--
+    ChmodPro - Mac OSX widget that determines UNIX/Linux permissions in various formats and displays chmod syntax suggestions.
+    Copyright (C) 2010  Steve Dickinson  dsdickinson@mac.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program (see COPYING file).  If not, see <http://www.gnu.org/licenses/>.
+--><head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style type="text/css" title="AppleStyle">
+        @import "chmodpro.css";
+    </style>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleInfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="localizedStrings.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/utilities.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/setup.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Text.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/InfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/GlassButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="chmodpro.js" charset="utf-8"></script>
+<script type="text/javascript" src="Parts/Shape.js" charset="utf-8"></script>
+</head>
+<body onload="load();">
+    <div id="front">
+        
+    
+    <img id="frontImg" src="Images/front.png" alt="" apple-locked="true" apple-part="com.apple.Dashcode.part.frontimage" apple-style="image-theme: 1; image-shape: 3; image-opacity: 1.00; image-top-color: 1.0000,1.0000,1.0000; image-bottom-color: 0.6154,0.6154,0.6154; image-radius: 12,12,12,12; image-border: 1; image-border-color: 0.5294,0.5294,0.5294; image-border-width: 1; shine-strength: 0.9; shine-alpha-level: 0.67; shine-height: 0.50; glass-arc-height: 0.06; shadow-include-shadow: 1; shadow-blur: 9.00; shadow-offset: -1.00,-6.00; shadow-color: 0.0000,0.0000,0.0000,0.3333;">
+        <div id="right_frame"></div>
+    <div id="left_frame"></div>
+    <div class="apple-no-children" id="info" apple-part="com.apple.Dashcode.part.infobutton" apple-default-image-visibility="hidden"></div>
+        <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" id="title_text" apple-group="text" apple-default-image-visibility="hidden"></div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="suid_ckbox" apple-group="checkboxbutton" style="">
+	<input type="checkbox" name="special_ckboxes" apple-group="checkboxbutton">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton" id="checkboxbutton1"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="owner_read_ckbox" apple-group="checkboxbutton2" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton2">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton2" id="checkboxbutton3"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="group_read_ckbox" apple-group="checkboxbutton4" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton4">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton4" id="checkboxbutton5"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="other_read_ckbox" apple-group="checkboxbutton6" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton6">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton6" id="checkboxbutton7"></div>
+</div>
+    
+    <input type="text" name="octal" value="" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield" id="octal" apple-group="textfield" maxlength="0" style="">
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="owner_text" apple-group="text" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="group_text" apple-group="text1" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="other_text" apple-group="text2" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="special_text" apple-group="text3"></div>
+    
+    
+    
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="owner_write_ckbox" apple-group="checkboxbutton2" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton2">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton2" id="checkboxbutton13"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="sgid_ckbox" apple-group="checkboxbutton">
+	<input type="checkbox" name="special_ckboxes" apple-group="checkboxbutton">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton" id="checkboxbutton15"></div>
+</div>
+    
+    
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="owner_exec_ckbox" apple-group="checkboxbutton2" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton2">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton2" id="checkboxbutton21"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="sticky_ckbox" apple-group="checkboxbutton">
+	<input type="checkbox" name="special_ckboxes" apple-group="checkboxbutton">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton" id="checkboxbutton23"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="read_text" apple-group="text4" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="write_text" apple-group="text5" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="execute_text" apple-group="text6" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="suid_text" apple-group="text7"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="sgid_text" apple-group="text8"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="sticky_text" apple-group="text9"></div>
+    <div apple-part="com.apple.Dashcode.part.glassbutton" class="apple-no-children" id="clear_button" apple-group="glassbutton1"></div>
+    <textarea class="apple-textarea apple-no-children" apple-part="com.apple.Dashcode.part.textarea" id="commands" apple-group="textarea"></textarea>
+    
+    
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="group_write_ckbox" apple-group="checkboxbutton6" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton6">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton6" id="checkboxbutton2"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="other_write_ckbox" apple-group="checkboxbutton6" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton6">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton6" id="checkboxbutton4"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="group_exec_ckbox" apple-group="checkboxbutton6" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton6">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton6" id="checkboxbutton6"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.checkboxbutton" id="other_exec_ckbox" apple-group="checkboxbutton6" style="">
+	<input type="checkbox" name="std_ckboxes" apple-group="checkboxbutton6">
+	<div style="position: absolute; top: 2px; left: 18px; text-align: left; vertical-align: middle;" apple-group="checkboxbutton6" id="checkboxbutton8"></div>
+</div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text" apple-group="text"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text1" apple-group="text"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text2" apple-group="text"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text3" apple-group="text"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text4" apple-group="text"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text5" apple-group="text"></div>
+    <input type="text" name="symbolic" value="" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield" id="symbolic" apple-group="textfield" maxlength="0" style="">
+    
+    
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text7" apple-group="text7" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text8" apple-group="text8" style=""></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text9" apple-group="text9"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text12" apple-group="text12"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text16" apple-group="text16"></div>
+    </div>
+    <div id="back">
+       <img id="backImg" src="Images/back.png" alt="" apple-locked="true" apple-part="com.apple.Dashcode.part.backimage" apple-style=" image-radius: 12,12,12,12; image-border: 1; image-border-color: 0.1500,0.1500,0.1500; image-border-width: 3; shadow-include-shadow: 1; shadow-blur: 9.00; shadow-offset: -1.00,-6.00; shadow-color: 0.0000,0.0000,0.0000,0.3333;">
+        
+        <div id="done" class="apple-no-children" apple-part="com.apple.Dashcode.part.glassbutton"></div>
+    
+    
+    
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text10" apple-group="text10"></div>
+    
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="mylink" apple-group="text12" style="" onclick="showCodeUni(event)" onmouseover="selectCodeUni(event)"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text6" apple-group="text6"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text11" apple-group="text11"></div>
+    <div apple-part="com.apple.Dashcode.part.roundedrectangleshape" class="apple-no-children" apple-style="image-theme: 1; image-shape: 3; image-button-type: 3; image-opacity: 1.00; image-top-color: 1.0000,1.0000,1.0000; image-bottom-color: 0.6154,0.6154,0.6154; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0.5294,0.5294,0.5294; image-border-width: 1; shine-strength: 0.90; shine-alpha-level: 0.67; shine-height: 0.50; glass-arc-height: 0.06; shadow-include-shadow: 0; shadow-blur: 3.00;" id="roundedRectangleShape" apple-group="roundedRectangleShape"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text13" apple-group="text13"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text14" apple-group="text14"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text15" apple-group="text15"></div>
+    <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text17" apple-group="text17"></div>
+    </div>
+
+</body>
+</html>
